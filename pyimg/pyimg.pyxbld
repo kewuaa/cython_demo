@@ -1,0 +1,19 @@
+from distutils.extension import Extension
+import numpy as np
+
+def make_ext(modname, pyxfilename):
+    """
+    如果 .pyxbld 文件中定义了这个函数, 那么在编译之前会进行调用, 并自动往里面进行传参
+    modname 是编译之后的扩展模块名,
+    pyxfilename 是编译的 .pyx 文件,注意: .pyx 和 .pyxbld 要具有相同的基名称
+    然后它要返回一个我们之前说的 Extension 对象
+    :param modname:
+    :param pyxfilename:
+    :return:
+    """
+    return Extension(modname,
+                     sources=[pyxfilename],
+                     extra_compile_args=['-fopenmp'],
+                     extra_link_args=['-fopenmp'],
+                     # include_dir 表示在当前目录中寻找头文件
+                     include_dirs=[".", np.get_include()])
